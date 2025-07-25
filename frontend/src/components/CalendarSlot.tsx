@@ -4,9 +4,10 @@ import { ChevronLeft, ChevronRight, Plus, Trash2, Clock, User, Phone } from 'luc
 import { useCalendar } from '../hooks/useCalendar.ts';
 import { BookingModal } from './BookingModal.tsx';
 import { apiService } from '../services/api.ts';
-import { Booking } from '../types';
+import { Booking } from '../types/index.ts';
+import { Loading } from './Loading.tsx';
 
-export const Calendar: React.FC = () => {
+export const CalendarSlot: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [showBookingModal, setShowBookingModal] = useState(false);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState<string | null>(null);
@@ -53,9 +54,7 @@ export const Calendar: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500"></div>
-      </div>
+      <Loading></Loading>
     );
   }
 
@@ -99,6 +98,19 @@ export const Calendar: React.FC = () => {
 
       {/* Time Slots */}
       <div className="p-6">
+          <div className="flex items-center gap-4 mb-6">
+                <span className='text-2xl font-semibold'>Daily Schedule</span>
+                <div className="flex items-center gap-4 text-sm">
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 bg-purple-600 rounded"></div>
+                    <span className='font-semibold'>Onboarding (40min)</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 bg-green-600 rounded"></div>
+                    <span className='font-semibold'>Follow-up (20min)</span>
+                  </div>
+                </div>
+              </div>
         <div className="grid gap-2">
           {calendarDay?.timeSlots.map(({ time, available, booking }) => (
             <div
