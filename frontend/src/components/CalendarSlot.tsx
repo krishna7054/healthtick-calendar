@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
 import { format, addDays, subDays } from 'date-fns';
-import { ChevronLeft, ChevronRight, Plus, Trash2, Clock, User, Phone } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Plus, Trash2, Clock, User, Phone, CalendarIcon } from 'lucide-react';
 import { useCalendar } from '../hooks/useCalendar.ts';
 import { BookingModal } from './BookingModal.tsx';
 import { apiService } from '../services/api.ts';
 import { Booking } from '../types/index.ts';
 import { Loading } from './Loading.tsx';
+import { useCalendarStats } from '../hooks/useCalendarStats.ts'; 
 
 export const CalendarSlot: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [showBookingModal, setShowBookingModal] = useState(false);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState<string | null>(null);
   const { calendarDay, loading, error, refreshCalendar } = useCalendar(selectedDate);
+  const { stats,refreshStats  } = useCalendarStats(selectedDate); 
 
   const navigateDate = (direction: 'prev' | 'next') => {
     setSelectedDate(prev => direction === 'next' ? addDays(prev, 1) : subDays(prev, 1));
@@ -29,6 +31,8 @@ export const CalendarSlot: React.FC = () => {
       try {
         await apiService.deleteBooking(bookingId);
         refreshCalendar();
+        refreshStats();
+        alert('Booking deleted successfully');
       } catch (error) {
         console.error('Error deleting booking:', error);
         alert('Failed to delete booking');
@@ -39,6 +43,7 @@ export const CalendarSlot: React.FC = () => {
   const handleBookingSuccess = () => {
     setShowBookingModal(false);
     setSelectedTimeSlot(null);
+    refreshStats();
     refreshCalendar();
   };
 
@@ -67,7 +72,46 @@ export const CalendarSlot: React.FC = () => {
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+    <div>
+      {/* Stats Cards Section */}
+<div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+  <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+    <div className="flex items-center gap-2">
+      <div className="p-2 bg-green-100 rounded-lg">
+        <CalendarIcon className="h-4 w-4 text-green-600" />
+      </div>
+      <div>
+        <p className="text-sm text-gray-600">Today's Calls</p>
+        <p className="text-2xl font-bold text-gray-900">{stats.totalToday}</p>
+      </div>
+    </div>
+  </div>
+  
+  <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+    <div className="flex items-center gap-2">
+      <div className="p-2 bg-purple-100 rounded-lg">
+        <Clock className="h-4 w-4 text-purple-600" />
+      </div>
+      <div>
+        <p className="text-sm text-gray-600">Recurring Series</p>
+        <p className="text-2xl font-bold text-gray-900">{stats.totalRecurring}</p>
+      </div>
+    </div>
+  </div>
+  
+  <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+    <div className="flex items-center gap-2">
+      <div className="p-2 bg-orange-100 rounded-lg">
+        <User className="h-4 w-4 text-orange-600" />
+      </div>
+      <div>
+        <p className="text-sm text-gray-600">One-time Calls</p>
+        <p className="text-2xl font-bold text-gray-900">{stats.totalOneTime}</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div className="bg-white rounded-xl shadow-lg overflow-hidden">
       {/* Header */}
       <div className="bg-gradient-to-r from-primary-500 to-primary-600 text-white p-6">
         <div className="flex items-center justify-between">
@@ -102,7 +146,7 @@ export const CalendarSlot: React.FC = () => {
                 <span className='text-2xl font-semibold'>Daily Schedule</span>
                 <div className="flex items-center gap-4 text-sm">
                   <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 bg-purple-600 rounded"></div>
+                    <div className="w-3 h-3 bg-blue-600 rounded"></div>
                     <span className='font-semibold'>Onboarding (40min)</span>
                   </div>
                   <div className="flex items-center gap-2">
@@ -195,6 +239,30 @@ export const CalendarSlot: React.FC = () => {
           onSuccess={handleBookingSuccess}
         />
       )}
+    </div>
+    {/* Demo Instructions */}
+        <div className="mt-6 bg-blue-50 border-blue-200 rounded-md shadow-lg">
+          <div className="p-4">
+            <h3 className="font-semibold text-blue-900 mb-2">🎯 Demo Instructions</h3>
+            <div className="text-sm text-blue-800 space-y-1">
+              <p>
+                • <strong>Try booking overlapping calls</strong> - The system will prevent conflicts
+              </p>
+              <p>
+                • <strong>Book a follow-up call</strong> - It will automatically repeat weekly
+              </p>
+              <p>
+                • <strong>Navigate between days</strong> - See how recurring calls appear on matching weekdays
+              </p>
+              <p>
+                • <strong>Search clients</strong> - Type names or phone numbers in the booking modal
+              </p>
+              <p>
+                • <strong>Delete bookings</strong> - Recurring calls will remove the entire series
+              </p>
+            </div>
+          </div>
+        </div>
     </div>
   );
 };
