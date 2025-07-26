@@ -1,5 +1,7 @@
 import * as admin from 'firebase-admin';
 import { Booking, Client } from '../models';
+import dotenv from 'dotenv';
+dotenv.config();
 
 // Initialize Firebase Admin with environment variables
 const initializeFirebase = () => {
@@ -13,6 +15,8 @@ const initializeFirebase = () => {
     });
   }
 };
+
+console.log("ds",process.env.FIREBASE_PROJECT_ID, process.env.FIREBASE_CLIENT_EMAIL, process.env.FIREBASE_PRIVATE_KEY);
 
 initializeFirebase();
 export const db = admin.firestore();
