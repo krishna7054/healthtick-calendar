@@ -4,7 +4,6 @@ import { ChevronLeft, ChevronRight, Plus, Trash2, Clock, User, Phone, CalendarIc
 import { useCalendar } from '../hooks/useCalendar.ts';
 import { BookingModal } from './BookingModal.tsx';
 import { apiService } from '../services/api.ts';
-import { Booking } from '../types/index.ts';
 import { Loading } from './Loading.tsx';
 import { useCalendarStats } from '../hooks/useCalendarStats.ts'; 
 

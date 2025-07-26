@@ -1,10 +1,7 @@
 import React from 'react';
 import { CalendarSlot } from './components/CalendarSlot.tsx';
-import { Loading } from './components/Loading.tsx';
 import { Calendar} from "lucide-react"
-setTimeout(() => {
-  <Loading></Loading>
-}, 1000);
+
 
 function App() {
   return (

@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { CalendarDay, Booking, Client, BookingFormData } from '../types';
 import dotenv from 'dotenv';
-
 const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
 
 const api = axios.create({
