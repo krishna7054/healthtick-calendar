@@ -14,6 +14,7 @@ const PORT = process.env.PORT || 3001;
 app.use(cors({
   origin: [
     'https://healthtick-calendar-6klhk6ayj-krishna7054s-projects.vercel.app',
+    'https://healthtick-calendar-six.vercel.app/',
     'http://localhost:3000',
     /\.vercel\.app$/, // Allow all Vercel preview deployments
   ],
