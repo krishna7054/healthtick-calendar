@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 3001;
 // Middleware
 app.use(helmet());
 app.use(cors({
-  origin: process.env.FRONTEND_URL || ['http://localhost:3000', 'https://healthtick-calendar-six.vercel.app/'],
+  origin: process.env.FRONTEND_URL || ['http://localhost:3000', 'https://healthtick-calendar-6klhk6ayj-krishna7054s-projects.vercel.app/'],
   credentials: true
 }));
 app.use(express.json());
