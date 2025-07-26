@@ -12,7 +12,7 @@ interface BookingModalProps {
   onSuccess: () => void;
 }
 
-export const BookingModal: React.FC<BookingModalProps> = ({
+export const BookingModal: React.FC<BookingModalProps> = React.memo(({
   isOpen,
   onClose,
   selectedDate,
@@ -226,4 +226,4 @@ export const BookingModal: React.FC<BookingModalProps> = ({
       </div>
     </div>
   );
-};
+});

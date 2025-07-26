@@ -10,7 +10,7 @@ import { apiService } from '../services/api.ts';
 import { Loading } from './Loading.tsx';
 import { useCalendarStats } from '../hooks/useCalendarStats.ts';
 
-export const CalendarSlot: React.FC = () => {
+export const CalendarSlot: React.FC = React.memo(() => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [showBookingModal, setShowBookingModal] = useState(false);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState<string | null>(null);
@@ -201,7 +201,7 @@ export const CalendarSlot: React.FC = () => {
       </div>
     </div>
   );
-};
+});
 
 // Reusable Card Component for Stats
 const StatCard = ({ title, value, icon, bg }: any) => (
