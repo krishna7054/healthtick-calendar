@@ -11,10 +11,15 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 // Middleware
-app.use(helmet());
 app.use(cors({
-  origin: process.env.FRONTEND_URL || ['http://localhost:3000', 'https://healthtick-calendar-6klhk6ayj-krishna7054s-projects.vercel.app/'],
-  credentials: true
+  origin: [
+    'https://healthtick-calendar-6klhk6ayj-krishna7054s-projects.vercel.app',
+    'http://localhost:3000',
+    /\.vercel\.app$/, // Allow all Vercel preview deployments
+  ],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
